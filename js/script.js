@@ -1,68 +1,61 @@
+// Define myName and h1 elements and log their values
 const myName = "Sami Fziyen";
 const h1 = document.querySelector(".heading-primary");
 console.log(myName);
 console.log(h1);
 
+// Add event listener to h1 element to change its text content and style on click (commented out for now)
 // h1.addEventListener("click", function () {
 //   h1.textContent = myName;
 //   h1.style.backgroundColor = "red";
 //   h1.style.padding = "5rem";
 // });
 
-///////////////////////////////////////////////////////////
-// Set current year
+// Set current year on yearEl element
 const yearEl = document.querySelector(".year");
 const currentYear = new Date().getFullYear();
 yearEl.textContent = currentYear;
 
-///////////////////////////////////////////////////////////
-// Make mobile navigation work
-
+// Make mobile navigation work by toggling nav-open class on headerEl element when btnNavEl is clicked
 const btnNavEl = document.querySelector(".btn-mobile-nav");
 const headerEl = document.querySelector(".header");
-
 btnNavEl.addEventListener("click", function () {
   headerEl.classList.toggle("nav-open");
 });
 
-///////////////////////////////////////////////////////////
-// Smooth scrolling animation
-
+// Add smooth scrolling animation to all links with a href attribute
 const allLinks = document.querySelectorAll("a:link");
-
 allLinks.forEach(function (link) {
   link.addEventListener("click", function (e) {
     e.preventDefault();
     const href = link.getAttribute("href");
 
-    // Scroll back to top
-    if (href === "#")
+    // If href is "#" scroll back to top with smooth behavior
+    if (href === "#") {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+    }
 
-    // Scroll to other links
+    // If href starts with "#" scroll to the section with the matching ID with smooth behavior
     if (href !== "#" && href.startsWith("#")) {
       const sectionEl = document.querySelector(href);
       sectionEl.scrollIntoView({ behavior: "smooth" });
     }
 
-    // Close mobile naviagtion
-    if (link.classList.contains("main-nav-link"))
+    // If link has main-nav-link class, toggle nav-open class on headerEl to close mobile navigation
+    if (link.classList.contains("main-nav-link")) {
       headerEl.classList.toggle("nav-open");
+    }
   });
 });
 
-///////////////////////////////////////////////////////////
-// Sticky navigation
-
+// Make header sticky when scrolling down by adding or removing sticky class on document.body based on sectionHeroEl visibility
 const sectionHeroEl = document.querySelector(".section-hero");
-
 const obs = new IntersectionObserver(
   function (entries) {
     const ent = entries[0];
-    // console.log(ent);
 
     if (ent.isIntersecting === false) {
       document.body.classList.add("sticky");
@@ -73,16 +66,14 @@ const obs = new IntersectionObserver(
     }
   },
   {
-    // In the viewport
-    root: null,
+    root: null, // In the viewport
     threshold: 0,
-    rootMargin: "-80px",
+    rootMargin: "-80px", // Trigger sticky class 80px before sectionHeroEl reaches the top of the viewport
   }
 );
 obs.observe(sectionHeroEl);
 
-///////////////////////////////////////////////////////////
-// Fixing flexbox gap property missing in some Safari versions
+// Check if browser supports flexbox gap property by creating a div element with flexbox and row gap, adding two child div elements, and checking if its scrollHeight is 1
 function checkFlexGap() {
   var flex = document.createElement("div");
   flex.style.display = "flex";
@@ -97,59 +88,11 @@ function checkFlexGap() {
   flex.parentNode.removeChild(flex);
   console.log(isSupported);
 
-  if (!isSupported) document.body.classList.add("no-flexbox-gap");
+  // If flexbox gap is not supported, add no-flexbox-gap class on document.body
+  if (!isSupported) {
+    document.body.classList.add("no-flexbox-gap");
+  }
 }
 checkFlexGap();
 
-// https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js
-
-/*
-.no-flexbox-gap .main-nav-list li:not(:last-child) {
-  margin-right: 4.8rem;
-}
-
-.no-flexbox-gap .list-item:not(:last-child) {
-  margin-bottom: 1.6rem;
-}
-
-.no-flexbox-gap .list-icon:not(:last-child) {
-  margin-right: 1.6rem;
-}
-
-.no-flexbox-gap .delivered-faces {
-  margin-right: 1.6rem;
-}
-
-.no-flexbox-gap .meal-attribute:not(:last-child) {
-  margin-bottom: 2rem;
-}
-
-.no-flexbox-gap .meal-icon {
-  margin-right: 1.6rem;
-}
-
-.no-flexbox-gap .footer-row div:not(:last-child) {
-  margin-right: 6.4rem;
-}
-
-.no-flexbox-gap .social-links li:not(:last-child) {
-  margin-right: 2.4rem;
-}
-
-.no-flexbox-gap .footer-nav li:not(:last-child) {
-  margin-bottom: 2.4rem;
-}
-
-@media (max-width: 75em) {
-  .no-flexbox-gap .main-nav-list li:not(:last-child) {
-    margin-right: 3.2rem;
-  }
-}
-
-@media (max-width: 59em) {
-  .no-flexbox-gap .main-nav-list li:not(:last-child) {
-    margin-right: 0;
-    margin-bottom: 4.8rem;
-  }
-}
-*/
+// Add CSS rules for no-flexbox-gap class to fix missing flexbox
